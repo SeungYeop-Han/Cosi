@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+    </style>
+
+    <title>Coin Simulator</title>
+</head>
+<body>
+    <header class="menuheader">
+        <h1>Coin Simulator</h1>
+        <nav>
+            <ul class="menu">
+                <li><a href="/login" class="menu1">Login</a></li>
+                <li><a href="/registration"  class="menu1">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div class="background">
+        <div class="homepageBackgroundImage" style="display: block;">
+            <img src="/img/homeBackgroundImage1.jpg">
+        </div>
+        <div class="homepageBackgroundImage" style="display: none;">
+            <img src="/img/homeBackgroundImage2.jpg" >
+        </div>
+        <div class="homepageBackgroundImage" style="display: none;">
+            <img src="/img/homeBackgroundImage3.jpg">
+        </div>
+    </div>
+
+<!--    <div class="introduce">-->
+<!--        <h3>가상화폐 모의투자 서비스</h3>-->
+<!--        <div class="contents">-->
+<!--            입문자를 안내해 줄 다양한 가이드들을 효과적인 방식으로 제공하며,-->
+<!--            <br>해당 가이드를 참고하며 동시에 모의투자를 진행할 수 있습니다.-->
+<!--            <br>단순 현재 시세를 기반으로 진행되는 모의 투자 시스템에서-->
+<!--            <br>한 단계 더 도약하여 실제 거래가 이루어지는 매커니즘대로-->
+<!--            <br>더욱 현실적인 거래 경험을 체험할 수 있습니다.-->
+<!--        </div>-->
+<!--    </div>-->
+</body>
+
+<!--배경이미지 변경 스크립트-->
+<script>
+    let indexOfCurrentBackgrundImage = 0;
+    let domsOfBackgroundImage = document.getElementsByClassName("homepageBackgroundImage");
+    let numOfImages = domsOfBackgroundImage.length;
+    function slideShow() {
+        //배경이미지를 보이지 않게 설정
+        for (let i = 0; i < numOfImages; i++) {
+            domsOfBackgroundImage[i].style.display = "none";
+        }
+
+        //다음 이미지로 변경
+        indexOfCurrentBackgrundImage = (indexOfCurrentBackgrundImage + 1) % numOfImages;
+        domsOfBackgroundImage[indexOfCurrentBackgrundImage].style.display = "block";
+    }
+
+    setInterval(slideShow, 4000);
+</script>
+
+</html>

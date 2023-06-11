@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+    </style>
+    <link rel="stylesheet" th:href="@{/css/registration.css}">
+</head>
+<body id="doc">
+    <div class="name">
+        <a href="/">Coin Mock Invester</a>
+    </div>
+
+    <div class="mainSignUp">
+        <form th:action="@{/registration}" method="POST" onsubmit="return isRegistrationFormValid()">
+            <div class="joinRaw">
+                <h3 class="join_Title">
+                    <label for="userEmail">이메일</label>
+                </h3>
+                <span>
+                    <input type="email" id="userEmail" name="email" class="signUpForm">
+                    <input type="button" value="이메일 확인" class="checkbtn" onclick="emailTest()" style="cursor: pointer">
+                </span>
+                <div id="emailDupCheckMsg"></div>
+            </div>
+
+            <div class="joinRaw">
+                <h3 class="join_Title">
+                    <label for="UserPassWord">비밀번호</label>
+                </h3>
+                <span>
+                    <input type="password" id="userPassword" name="password" class="signUpForm">
+                </span>
+                <h3 class="join_Title">
+                    <label for="CheckUserPassword">비밀번호 확인</label>
+                </h3>
+                <span>
+                    <input type="password" id="CheckUserPassword" class="signUpForm">
+                    <input type="button" value="비밀번호 확인" class="checkbtn" onclick="passwordTest()" style="cursor: pointer">
+                </span>
+                <div id="passwordMatchCheckMsg"></div>
+            </div>
+
+            <div class="joinGroup">
+                <div class="joinRaw">
+                    <h3 class="join_Title">
+                        <label for="name">이름</label>
+                    </h3>
+                    <span>
+                        <input type="text" id="name" name="name" class="signUpForm" maxlength="30">
+                    </span>
+                    <div id="nameLengthCheckMsg"></div>
+                </div>
+            </div>
+
+            <input type="submit" id="submitButton" value="회원가입 하기" class="signupbtn" style="cursor: pointer">
+
+        </form>
+    </div>
+</body>
+<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
+<script th:inline="javascript" th:src="@{/js/registration.js}"></script>
+</html>

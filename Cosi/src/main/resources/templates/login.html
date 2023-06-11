@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+
+    <style> @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');</style>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+    <div class="name">
+        <a href="/">Coin Simulator</a>
+    </div>
+
+    <div class="loginform">
+
+        <div>
+            <form th:action="@{/login}" method="POST" target="_self">
+
+                <input type="email" class="loginfield" name="username" placeholder="E-mail"><br><br>
+
+                <input type="password" class="loginfield" name="password" placeholder="Password"><br><br>
+
+                <input type="submit" value="로그인" class="submitBtn">
+
+            </form>
+        </div>
+        <div th:text="${exception}" style="color: red"></div>
+        <div>
+            <nav>
+                <ul class="loginetc">
+                    <li class="etc" onclick="location.href='/registration'">회원가입</li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=0.75, maximum-scale=0.75" >
+  <title>CO:SI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+  </style>
+  <link rel="stylesheet" th:href="@{/css/user-info.css}">
+  <script th:inline="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+</head>
+<body>
+
+  <header class="menuheader">
+    <h1><a href="/">CO:SI</a></h1>
+    <nav class="coinmenu">
+      <a href="/market" class="coinmenudetail">거래소</a>
+      <a href="/member/asset" class="coinmenudetail">투자내역</a>
+    </nav>
+    <ul class="mymenu">
+      <li><a href="/member" class="menudetail">MY</a></li>
+      <li><a class="menudetail" onclick="$.ajax({
+                type : 'POST',
+                url: '/logout',
+                beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token)
+                },
+                success: function(msg) {
+                    location.reload()
+                }
+            })" style="cursor: pointer">LOGOUT</a></li>
+    </ul>
+  </header>
+
+  <div class="myInfo">
+    <input type="radio" id="tab1" name="selectMyInfo" checked/>
+    <input type="radio" id="tab2" name="selectMyInfo"/>
+    <input type="radio" id="tab3" name="selectMyInfo"/>
+    <input type="radio" id="tab4" name="selectMyInfo"/>
+    <div class="tab">
+      <label for="tab1">프로필</label>
+      <label for="tab2">계정 보안</label>
+      <label for="tab3">지갑</label>
+      <label for="tab4">계정 탈퇴</label>
+    </div>
+    <div class="infoblock">
+      <div class="profile">
+        <h2 class="myProfile">내 정보 확인하기</h2>
+        <div class="infofield" th:text="'이메일 : ' + ${email}"></div>
+        <div class="infofield" th:text="'이름 : ' + ${name}" ></div>
+      </div>
+
+      <div class="accountSecurity">
+        <h2 class="securityTitle">비밀번호 변경하기</h2>
+
+        <form>
+          <input type="password" class="passwordfield" id="password" placeholder="현재 비밀번호 입력"><br><br>
+          <input type="password" class="passwordfield" id="newPassword1" placeholder="새 비밀번호 입력"><br><br>
+          <input type="password" class="passwordfield" id="newPassword2" placeholder="새 비밀번호 확인"><br><br>
+          <div id="printPass"></div>
+          <input type="button" value="비밀번호 변경" class="submitBtn" onclick="passwordTest()">
+        </form>
+      </div>
+
+      <div class="asset">
+        <h2 class="assetTitle">투자내역 초기화</h2>
+        <div class="moneyClear">
+          <h3 style="color: red;">계정 초기화 시 모든 투자내역과 자산정보가 초기화됩니다.</h3>
+            <button type="button" value="보유 시드 초기화하기" class="submitBtn" onclick="reset()">보유 시드 초기화하기</button>
+        </div>
+      </div>
+
+      <div class="deleteUser">
+        <h2 class="deleteTitle">계정 삭제</h2>
+        <h3 style="color: red;">경고 : 계정을 삭제할 경우 모든 거래와 보유 시드를 이용할 수 없습니다.</h3>
+        <form action="/hell" method="GET">
+          <button type="submit" value="계정 탈퇴하기" class="submitBtn">계정 탈퇴하기</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</body>
+<script th:inline="javascript" th:src="@{/js/user-info.js}"></script>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>자산목록</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.50, maximum-scale=0.75" >
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+    </style>
+    <link rel="stylesheet" th:href="@{/css/asset.css}">
+    <script th:inline="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+</head>
+<body>
+
+<header class="menuheader">
+    <h1>CO:SI</h1>
+    <nav class="coinmenu">
+        <a href="/market" class="coinmenudetail">거래소</a>
+        <a href="/member/asset" class="coinmenudetail">자산목록</a>
+    </nav>
+    <ul class="mymenu">
+        <li><a href="/member" class="menudetail">MY</a></li>
+        <li><a class="menudetail" onclick="$.ajax({
+                type : 'POST',
+                url: '/logout',
+                beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token)
+                },
+                success: function(msg) {
+                    location.reload()
+                }
+            })" style="cursor: pointer">LOGOUT</a></li>
+    </ul>
+</header>
+
+
+<div class="myInvestment">
+    <div class="total">
+        <div class="myAsset" >
+            <dl class="totalTradeAmount">
+                <dt>보유 시드</dt>
+                <dd>
+                        <span id="seed" th:text="${seed}"></span>
+                </dd>
+            </dl>
+            <dl class="totalTradeAmount">
+                <dt>총 보유 자산</dt>
+                <dd>
+                        <span id="assetValue"></span>
+                </dd>
+            </dl>
+            <dl class="tradeAmount">
+                <dt>총 매수 금액</dt>
+                <dd>
+                        <span id="totalBuyPrice"></span>
+                </dd>
+            </dl>
+            <dl class="tradeAmount">
+                <dt>총 평가 손익</dt>
+                <dd>
+                        <span id="totalPL"></span>
+                </dd>
+            </dl>
+            <dl class="tradeAmount">
+                <dt>총 평가 금액</dt>
+                <dd>
+                        <span id="totalMarketValue"></span>
+                </dd>
+            </dl>
+            <dl class="tradeAmount">
+                <dt>총 평가 수익률</dt>
+                <dd>
+                        <span id="totalPLRate"></span>
+                </dd>
+            </dl>
+        </div>
+
+        <div class="myAssetList">
+            <div class="myAssetListText">보유 자산 목록</div>
+            <div class="content">
+                <table>
+                    <thead>
+                    <th>코인유형</th>
+                    <th>보유수량</th>
+                    <th>매수평균가</th>
+                    <th>매수금액</th>
+                    <th>평가금액</th>
+                    <th>평가손익</th>
+                    <th>평가수익률</th>
+                    </thead>
+                    <tbody id="coins">
+                    <tr th:each="w : ${wallets}">
+                        <td th:text="${w.coin.code}"></td>
+                        <td th:text="${w.amount}"></td>
+                        <td th:text="${w.avgBuyPrice}"></td>
+                        <td th:text="${w.totalBuyPrice}"></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="coinlist">
+        <div>
+            <table class="coinlistThead">
+                <thead>
+                <tr>
+                    <th>종목</th>
+                    <th>현재가</th>
+                    <th>전일대비</th>
+                    <th>전일대비 값</th>
+                    <th>거래대금</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="coinlistTbody">
+            <table class="coinlistTable">
+                <tbody id="output">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+<script th:inline="javascript" th:src="@{/js/evalAsset.js}"></script>
+<script th:inline="javascript" th:src="@{/js/marketSelector.js}"></script>
+<script th:inline="javascript" th:src="@{/js/coin-list.js}"></script>
+<script>
+    $(document).ready(function(){
+        printCoinList();
+    })
+    setInterval(evalAsset, 500)
+</script>
+</html>

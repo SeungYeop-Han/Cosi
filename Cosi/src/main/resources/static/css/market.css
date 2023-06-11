@@ -1,0 +1,531 @@
+body{
+    background-color: whitesmoke;
+    color: #191970;
+    margin: 0;
+    padding: 0;
+    /*zoom : 0.75; => cause component dislocation problem!*/
+    font-family: 'Gowun Dodum';
+}
+
+.view{
+    width: 2000px;
+    height: 2500px;
+    margin: 0 auto;
+    text-align :center;
+}
+
+/* 헤더 css */
+.menuheader{
+    width : 100%;
+    height: 100px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 70px;
+    z-index: 1;
+    color: aliceblue;
+    background-color: #191970;
+    position : fixed;
+}
+
+.menuheader h1{
+    min-width: 200px;
+}
+
+.menuheader h1 a{
+    color : aliceblue;
+}
+
+.coinmenu{
+    color: aliceblue;
+    margin-right: 40%;
+    min-width: 400px;
+}
+
+.coinmenudetail {
+    width: 80px;
+    display: inline-block;
+    color: aliceblue;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 85px;
+    height: 100%;
+    left : 30%;
+}
+
+
+.mymenu{
+    display: flex;
+    list-style: none;
+    margin-right : 10%;
+    min-width: 300px;
+}
+
+.menudetail{
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 85px;
+    color: aliceblue;
+    height: 100%;
+    width: 140px;
+}
+
+a{
+    text-decoration: none;
+}
+
+/* 본문 css */
+
+.allmenu {
+    width: 90%;
+    height: 1550px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+/* 차트 + 실시간 정보  css */
+
+.showA{
+    display: inline-block;
+    width: 1200px;
+    height: 1500px;
+}
+
+.coinname{
+    height: 220px;
+    width: 1150px;
+    padding:5px;
+}
+
+.tradePrice{
+    width: 300px;
+    margin-left: 5%;
+    border-right: #191970;
+    border-right-width: thick;
+    display: inline-block;
+    padding-top: 10px;
+    line-height: 60px;
+    float: left;
+}
+
+#marketName{
+    font-weight: bold;
+    font-size: 30px;
+    padding: 10px;
+    margin-top: 0px;
+}
+
+.tp{
+    font-size: 30px;
+    text-align: left;
+    padding-left: 30px;
+    font-weight: bold;
+}
+
+.scr{
+    font-size: 20px;
+    text-align: left;
+    padding-left: 30px;
+    font-weight: bold;
+}
+
+.src span{
+    color: darkgrey;
+    font-size : 20px ;
+    padding: 0;
+    width: 400px;
+}
+
+.market {
+    margin-right : 50px;
+    text-align: right;
+    font-weight : bold;
+}
+
+.coinbox{
+    /*width: 1050;*/
+    height:125px;
+    background-color : rgb(207, 216, 251);
+    margin-bottom : 10px;
+    padding : 10px;
+}
+
+.marketSelect{
+    width: 150px;
+    padding : 10px;
+    border : 3px #191970 soild;
+    border-radius:5px;
+    color: #191970;
+    font-size : 15px;
+    font-weight : bold;
+    font-family: 'Gowun Dodum';
+}
+
+.selectChoice{
+   height : 100px;
+   width: 1050px;
+}
+
+.selectUnit{
+    width: 300px;
+    display: inline-block;
+    line-height: 100px;
+    margin-right : 30px;
+    float:left;
+}
+
+.toFront{
+    background-color: #191970;
+    color: aliceblue;
+    border: 0;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 30px;
+    width: 100px;
+    padding: 10px;
+    font-family: 'Gowun Dodum';
+    margin-left: 0px;
+}
+
+.printInfo{
+    display: inline-block;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 40px;
+    padding: 0px;
+    width : auto;
+    height : 500px
+}
+
+.candleUnitSelect{
+     width: 150px;
+     padding : 10px;
+     border : 3px #191970 soild;
+     border-radius:5px;
+     font-size : 15px;
+     font-weight : bold;
+     font-family: 'Gowun Dodum';
+}
+
+.coininfo{
+    display: inline-block;
+    width: 700px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 40px;
+    float: right;
+}
+
+.coininfo dl{
+    display: table;
+    float: left;
+}
+
+.coininfo dl dt{
+    border: 1px solid darkgray;
+    width: 130px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.coininfo dl dd{
+    display: table-cell;
+    border: 1px solid darkgray;
+    width: 180px;
+    text-align: center;
+    font-weight: bold;
+    padding: 0px;
+}
+
+.charts{
+    width: 95%;
+    height: 850px;
+    border: 5px solid yellow;
+    display: inline-block;
+    border: 5px solid #191970;
+}
+
+/* 실시간 체결 css */
+
+.transaction{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.coinState{
+    padding-right: 5px;
+    display: inline-block;
+}
+
+.coinStateThead th{
+    border-bottom: 3px solid darkgray;
+    font-size: 20px;
+    padding: 15px;
+    width: 300px;
+}
+
+.coinStateThead{
+    width: 550px;
+    font-size: 20px;
+}
+
+.coinStateTbody {
+    width: 550px;
+    font-size: 20px;
+    overflow-y: scroll;
+    max-height: 550px;
+}
+
+.coinStateTbody td {
+    width: 300px;
+    text-align: center;
+    border-bottom: 1px solid darkgray;
+}
+
+/* 매도 매수 css */
+
+.sellAndBuy{
+    width: 600px;
+    height: 600px;
+    display: inline-block;
+}
+
+ .content{
+   background-color: aliceblue;
+   border: 5px solid #191970;
+   min-height: 550px;
+ }
+
+ .content div{
+    padding: 30px;
+    font-size: 20px;
+ }
+
+.sellAndBuy input[type=radio]{
+    display: none;
+}
+
+.content-dis input[type=radio]{
+    display: inline-block;
+}
+
+#buy:checked ~ .tab label:nth-child(1),
+#sell:checked ~ .tab label:nth-child(2),
+#order:checked ~ .tab label:nth-child(3) {
+    background-color: #191970;
+    color: aliceblue;
+}
+
+.content > div {
+    display: none;
+ }
+
+#buy:checked ~ .content div:nth-child(1),
+#sell:checked ~ .content div:nth-child(2),
+#order:checked ~ .content div:nth-child(3) {
+    display: block;
+}
+
+.pendingOrder:checked ~  .pendingArea,
+.marketOrder:checked ~ .marketArea,
+.bookOrder:checked ~ .orderArea {
+    height: 250px;
+    padding-top: 5px;
+    margin-bottom: 30px;
+    display: block;
+}
+
+.pendingArea, .marketArea, .orderArea  {
+    padding-top: 5px;
+    margin-bottom: 30px;
+    display: none;
+}
+
+.orderPossible{
+    float : right;
+    width: 200px;
+    height: 30px;
+    margin-top: 0px;
+}
+
+.tab{
+    overflow: hidden;
+}
+
+.orderType{
+    font-weight: bold;
+    margin-right: 100px;
+}
+
+.orderMenu{
+    font-weight: bold;
+    float: left;
+}
+
+.inputValue{
+    width: 200px;
+    height: 30px;
+    float: right;
+}
+
+.orderCondition {
+    text-align: right;
+    font-size: 15px;
+    color: darkgray;
+}
+
+.content-dis button{
+    background-color: #191970;
+    color: aliceblue;
+    border: 0;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 15px;
+    font-family: 'Gowun Dodum';
+    margin-left: 10px;
+
+}
+
+/* 내정보 + 현재가 리스트 css */
+
+.showB{
+    display: inline-block;
+    width: 600px;
+    height: 1500px;
+    overflow: hidden;
+}
+
+.coinlist{
+    height: 1250px;
+    overflow:scroll;
+    font-size: 20px;
+}
+
+/* 내정보 */
+
+.myInfo{
+    height: 210px;
+    border: 5px solid #191970;
+    margin-bottom: 10px;
+}
+
+.myName{
+    font-size: 30px;
+    padding: 20px;
+    text-align: left;
+}
+
+.myEmail{
+    font-size: 20px;
+    padding: 10px;
+    color: darkgrey;
+    text-align: left;
+}
+
+.myMoney{
+    font-size: 20px;
+    padding: 10px;
+    text-align: left;
+}
+
+/* 코인 현재가 리스트  */
+
+.coinlist Table{
+    width: 100%;
+    font-size: 20px;
+    border:3px solid darkgray;
+}
+
+.coinlist th{
+    border-bottom: 3px solid darkgray;
+    font-size: 20px;
+    padding: 15px;
+}
+
+.coinlist td{
+    font-size: 15px;
+    font-weight: bold;
+    border-bottom: 1px solid darkgray;
+    padding: 15px;
+}
+
+.coinlist span{
+    font-size: 15px;
+    color: grey;
+}
+/* 사용자 체결 미체결 css */
+
+.showC{
+    width: 1800px;
+    height: 600px;
+    margin: 0 auto;
+    margin-top: 5px;
+    color: #191970;
+}
+
+.showC input[type=radio]{
+    display: none;
+}
+
+#tab1:checked ~ .tab label:nth-child(1),
+#tab2:checked ~ .tab label:nth-child(2) {
+    background-color: #191970;
+    color: aliceblue;
+}
+
+.orderContent > div {
+    display: none;
+ }
+
+#tab1:checked ~ .orderContent div:nth-child(1),
+#tab2:checked ~ .orderContent div:nth-child(2) {
+    display: block;
+}
+
+.tab{
+    overflow: hidden;
+}
+
+.tab label {
+    font-size: 20px;
+    cursor: pointer;
+    float: left;
+    width: 15%;
+    text-align: center;
+    padding: 15px 0;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+
+.orderContent {
+  background-color: aliceblue;
+  border: 5px solid #191970;
+  min-height: 550px;
+}
+.orderContent div{
+   padding: 30px;
+   font-size: 20px;
+}
+
+.orderContent-dis th {
+    height: 28px;
+    width: 400px;
+    padding: 10px 0;
+    border-bottom: 1px solid #191970;
+    font-weight: bold;
+}
+
+.clearTransaction{
+    background-color: #191970;
+    color: aliceblue;
+}

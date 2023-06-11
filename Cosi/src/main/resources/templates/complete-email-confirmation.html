@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CO:SI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+    </style>
+    <link rel="stylesheet" th:href="@{/css/email-confirmation.css}">
+
+</head>
+<body>
+
+<div class="name">
+    <a href="/">CO:SI</a>
+</div>
+
+<div class="complete">
+    <p th:text="${name} + '님 가입을 축하합니다!'">가입을 축하합니다</p>
+</div>
+
+<div class="sayhello">
+    CO:SI의 모든 모의투자 서비스를 이용하실 수 있습니다. <br>
+    CO:SI를 이용해 주셔서 감사합니다.
+</div>
+
+<div class="date">
+
+    <div class="date1">가입 날짜 : </div>
+    <div id="current_date" class="date1">
+        <script>
+
+            date = new Date();
+            year = date.getFullYear();
+            month = date.getMonth() + 1;
+            day = date.getDate();
+
+            document.getElementById("current_date").innerHTML = year + "년 " + month + "월 " + day + "일" ;
+
+        </script>
+    </div>
+
+</div>
+
+
+<div class="btnArea">
+    <button type="button" id="Join"  class="startBtn" onclick="location.href='/login'">
+        <span>시작하기</span>
+    </button>
+</div>
+
+</body>
+</html>

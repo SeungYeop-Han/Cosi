@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head lang="ko">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.50, maximum-scale=0.75" >
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+    </style>
+    <title>거래소</title>
+    <link rel="stylesheet" th:href="@{/css/market.css}">
+</head>
+<body>
+
+<header class="menuheader">
+    <h1>CO:SI</h1>
+    <nav class="coinmenu">
+        <a href="/market" class="coinmenudetail">거래소</a>
+        <a href="/member/asset" class="coinmenudetail">자산목록</a>
+    </nav>
+    <ul class="mymenu">
+        <li><a href="/member" class="menudetail">MY</a></li>
+        <li><a class="menudetail" onclick="$.ajax({
+                type : 'POST',
+                url: '/logout',
+                beforeSend: function(xhr){
+                xhr.setRequestHeader(header, token)
+                },
+                success: function(msg) {
+                    location.reload()
+                }
+            })" style="cursor: pointer">LOGOUT</a></li>
+    </ul>
+</header>
+
+<div class="view">
+    <div class="allmenu">
+
+        <div class="showA">
+            <article class="charts">
+                <div class="coinname">
+                    <div>
+                        <div class="tradePrice">
+                            <div id="marketName"></div>
+                            <div class="tp" id="tradePrice"></div>
+                            <div class="scr">전일대비 <span id="changeRate"></span>&nbsp;<span id="changePrice"></span></div>
+                        </div>
+                        <div class="coininfo">
+                            <div id="market" class="market">마켓:
+                                <select id="marketSelect" class="marketSelect" onchange>
+                                </select>
+                            </div>
+                            <dl>
+                                <dt >고가</dt>
+                                <dd id="highPrice" style="color: red">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>거래량(24H)</dt>
+                                <dd id="accTradeVolume_24H">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>저가</dt>
+                                <dd id="lowPrice" style="color: blue">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>거래대금(24H)</dt>
+                                <dd id="accTradeRate_24H">
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div id="jb-content">
+                    <div id="jb-content1" class="coinbox">
+                        <div class="selectUnit">
+                            <select id="candleUnitSelect" class="candleUnitSelect">
+                                <option label="1 month" value="months"></option>
+                                <option label="1 week" value="weeks"></option>
+                                <option label="1 day" value="days"></option>
+                                <option label="4 hour" value="minutes/240"></option>
+                                <option label="1 hour" value="minutes/60"></option>
+                                <option label="30 min" value="minutes/30"></option>
+                                <option label="15 min" value="minutes/15"></option>
+                                <option label="10 min" value="minutes/10"></option>
+                                <option label="5 min" value="minutes/5"></option>
+                                <option label="3 min" value="minutes/3"></option>
+                                <option label="1 min" value="minutes/1"selected></option>
+                            </select>
+                            <button id="toFront" class="toFront" type="button"> >>> </button>
+                        </div>
+                        <div class="printInfo">
+                            <p id="ochlv"></p>
+                            <p id="mas"></p>
+                        </div>
+                    </div>
+                    <div id="candleChart" style="height: 450px; width: 0 auto;"></div>
+                </div>
+            </article>
+
+            <div class="transaction">
+
+                <div class="coinState">
+                    <div class="coinStateThead">
+                        <table >
+                            <thead>
+                            <tr>
+                                <th>체결 시간</th>
+                                <th>체결 가격(KRW)</th>
+                                <th>체결량</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="coinStateTbody" id="coinState">
+                        <table id="tradeTable">
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <script>
+                            const $element = document.getElementById("coinState");
+                            $element.scrollTop = $element.scrollHeight;
+                        </script>
+                    </div>
+                </div>
+
+                <div class="sellAndBuy">
+                    <input type="radio" id="buy" name="transactionMenu" checked/>
+                    <input type="radio" id="sell" name="transactionMenu"/>
+                    <input type="radio" id="order" name="transactionMenu"/>
+                    <div id="tab" class="tab">
+                        <label for="buy" style="width: 150px;">매수</label>
+                        <label for="sell" style="width: 150px;">매도</label>
+                        <label for="order"style="width: 150px;">거래내역</label>
+                    </div>
+                    <div class="content">
+                        <div class="content-dis">
+                            <form name="buy" class="buyForm">
+
+                                <span class="orderType">주문 구분</span>
+                                <input type="radio" name="buyOrderType" value="pendingOrder" class="pendingOrder" checked/>지정가
+                                <input type="radio" name="buyOrderType" value="marketOrder" class="marketOrder"/>시장가
+                                <input type="radio" name="buyOrderType" value="bookOrder" class="bookOrder"/>예약-지정가
+                                <br><br>
+
+                                <div class="pendingArea">
+                                    <span class="orderMenu">주문 가능</span>
+                                    <p class="orderPossible" th:text="${seed} + ' KRW'" ></p>
+                                    <br><br>
+                                    <span class="orderMenu">매수 가격</span>
+                                    <input class="inputValue"  type="number" id="bpbuyMoney" value="buyMoney" min="0" onchange="setStep">
+                                    <br><br>
+                                    <span class="orderMenu">주문 수량</span>
+                                    <input class="inputValue" type="number" id="bpbuyNumber" value="buyNumber" min="0">
+                                    <br><br>
+                                    <span class="orderMenu">주문 총액</span>
+                                    <input class="inputValue" type="number" id="bpbuyTotal" value="buyTotal" min="0">
+                                    <br><br>
+                                </div>
+                                <div class="marketArea">
+                                    <span class="orderMenu">주문 가능</span>
+                                    <p class="orderPossible" th:text="${seed} + ' KRW'" ></p>
+                                    <br><br>
+                                    <span class="orderMenu">주문 총액</span>
+                                    <input class="inputValue" type="number" id="bmbuyTotal" value="buyTotal" min="0">
+                                    <br><br>
+                                </div>
+                                <div class="orderArea">
+                                    <span class="orderMenu">주문 가능</span>
+                                    <p class="orderPossible" th:text="${seed} + ' KRW'"></p>
+                                    <br><br>
+                                    <span class="orderMenu">감시 가격</span>
+                                    <input class="inputValue"  type="number" id="bobuyWant" value="buyWant" min="0" onchange="setStep" disabled>
+                                    <br><br>
+                                    <span class="orderMenu">매수 가격</span>
+                                    <input class="inputValue"  type="number" id="bobuyMoney" value="buyMoney" min="0" onchange="setStep" disabled>
+                                    <br><br>
+                                    <span class="orderMenu">주문 수량</span>
+                                    <input class="inputValue" type="number" id="bobuyNumber" value="buyNumber" min="0" disabled>
+                                    <br><br>
+                                    <span class="orderMenu">주문 총액</span>
+                                    <input class="inputValue" type="number" id="bobuyTotal" value="buyTotal" min="0" disabled>
+                                    <br><br>
+                                </div>
+                                <span class="orderCondition">
+                                        최소주문금액 : 5000.0KRW &nbsp;수수료(부가세 포함) : 0.05%
+                                    </span>
+                                <br><br>
+                                <button type="reset" style="width: 100px;">초기화</button>
+                                <button type="button" style="width: 300px;" onclick="BuyButton()">매수</button>
+                            </form>
+                        </div>
+                        <div class="content-dis">
+                            <form name="sell" class="sellForm">
+
+                                <span class="orderType">주문 구분</span>
+                                <input type="radio" name="sellOrderType" value="pendingOrder" class="pendingOrder" checked/>지정가
+                                <input type="radio" name="sellOrderType" value="marketOrder" class="marketOrder" />시장가
+                                <input type="radio" name="sellOrderType" value="bookOrder" class="bookOrder"/>예약-지정가
+                                <br><br>
+
+                                <div class="pendingArea">
+                                    <span class="orderMenu">주문 가능</span>
+                                    <p class="orderPossible" th:text="${seed} + ' KRW'" ></p>
+                                    <br><br>
+                                    <span class="orderMenu">매도 가격</span>
+                                    <input class="inputValue"  type="number" id="spsellMoney" value="sellMoney" min="0" onchange="setStep">
+                                    <br><br>
+                                    <span class="orderMenu">주문 수량</span>
+                                    <input class="inputValue" type="number" id="spsellNumber" value="sellNumber" min="0">
+                                    <br><br>
+                                    <span class="orderMenu">주문 총액</span>
+                                    <input class="inputValue" type="number" id="spsellTotal" value="sellTotal" min="0">
+                                    <br><br>
+                                </div>
+                                <div class="marketArea">
+                                    <span class="orderMenu">주문 가능</span>
+                                    <p class="orderPossible" th:text="${seed} + ' KRW'" ></p>
+                                    <br><br>
+                                    <span class="orderMenu">주문 수량</span>
+                                    <input class="inputValue" type="number" id="smsellTotal" value="sellTotal" min="0">
+                                    <br><br>
+                                </div>
+                                <div class="orderArea">
+                                    <span class="orderMenu">주문 가능</span>
+                                    <p class="orderPossible" th:text="${seed} + ' KRW'" ></p>
+                                    <br><br>
+                                    <span class="orderMenu">감시 가격</span>
+                                    <input class="inputValue"  type="number" id="sosellWant" value="sellWant" min="0" onchange="setStep" disabled>
+                                    <br><br>
+                                    <span class="orderMenu">매도 가격</span>
+                                    <input class="inputValue"  type="number" id="sosellMoney" value="sellMoney" min="0" onchange="setStep" disabled>
+                                    <br><br>
+                                    <span class="orderMenu">주문 수량</span>
+                                    <input class="inputValue" type="number" id="sosellNumber" value="sellNumber" min="0" disabled>
+                                    <br><br>
+                                    <span class="orderMenu">주문 총액</span>
+                                    <input class="inputValue" type="number" id="sosellTotal" value="sellTotal" min="0" disabled>
+                                    <br><br>
+                                </div>
+                                <span class="orderCondition">
+                                        최소주문금액 : 5000.0KRW &nbsp;수수료(부가세 포함) : 0.05%
+                                </span>
+                                <br><br>
+                                <button type="reset" style="width: 100px;">초기화</button>
+                                <button type="button" style="width: 300px;" onclick="SellButton()">매도</button>
+                            </form>
+                        </div>
+                        <div>
+                            내 자산 내역
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="showB">
+
+            <div class="myInfo">
+                <div class="myName" th:text="${userName} + '님 '"></div>
+                <div class="myEmail" th:text="${userEmail}"></div>
+                <div class="myMoney" th:text="'보유 시드머니 : ' + ${seed} + ' 원'"></div>
+            </div>
+            <div class="coinlist">
+                <table id="coinListTable" class="coinlistTable">
+                    <thead>
+                    <th>종목</th>
+                    <th>현재가</th>
+                    <th>전일대비</th>
+                    <th>전일대비 값</th>
+                    <th>거래대금</th>
+                    </thead>
+                    <tbody id="output">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="orderTab" class="showC" onchange>
+
+        <input type="radio" id="tab1" name="checkTransaction" checked/>
+        <input type="radio" id="tab2" name="checkTransaction"/>
+        <div class="tab">
+            <label for="tab1">미체결 주문</label>
+            <label for="tab2">체결 주문</label>
+            <label class="clearTransaction" style="float: right; width : 100px;" onclick="refreshOrderList()">↺</label>
+        </div>
+        <div class="orderContent">
+            <div class="orderContent-dis">
+                <table>
+                    <thead>
+                    <th>주문번호</th>
+                    <th>코인</th>
+                    <th>매수/매도</th>
+                    <th>주문수량</th>
+                    <th>주문단가</th>
+                    <th>주문총액</th>
+                    <th>감시가격</th>
+                    <th>주문시간</th>
+                    <th>취소</th>
+                    </thead>
+                    <tbody id="unfilledOrders">
+                    </tbody>
+                </table>
+            </div>
+            <div class="orderContent-dis">
+                <table>
+                    <thead>
+                    <th>주문번호</th>
+                    <th>코인</th>
+                    <th>매수/매도</th>
+                    <th>주문유형</th>
+                    <th>주문단가</th>
+                    <th>체결단가</th>
+                    <th>체결수량</th>
+                    <th>체결금액</th>
+                    <th>주문총액</th>
+                    <th>주문시간</th>
+                    <th>체결시간</th>
+                    <th>수수료(KRW)</th>
+                    </thead>
+                    <tbody id="filledOrders">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script th:inline="javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
+<script th:inline="javascript" th:src="@{/lib/echarts.js}"></script>
+<script th:inline="javascript" th:src="@{/js/marketSelector.js}"></script>
+<script th:inline="javascript" th:src="@{/js/plot-candle.js}"></script>
+<script th:inline="javascript" th:src="@{/js/update-ticker.js}"></script>
+<script th:inline="javascript" th:src="@{/js/order-list.js}"></script>
+<script th:inline="javascript" th:src="@{/js/coin-list.js}"></script>
+<script th:inline="javascript" th:src="@{/js/transaction.js}"></script>
+<script>
+    //문서 준비 완료 후 코인 리스트와 주문(미체결, 체결) 리스트를 출력
+    $(document).ready(function(){
+        //마켓 리스트 생성
+        getMarkets('https://api.upbit.com/v1/market/all?isDetail=false')
+            //마켓리스트를 활용하여 Select 태그의 Option들을 생성
+            .then(makeSelectOptions)
+            //선택된 option에 대응하는 코인에 대하여 차트를 렌더링
+            .then(function(marketSelect){
+                //캔들 차트 그리기
+                let market = $('#marketSelect option:selected').val();
+                let unit = $('#candleUnitSelect option:selected').val();
+                let url = 'https://api.upbit.com/v1/candles/' + unit + '?market=' + market + '&count=200&to='
+
+                candleChart.showLoading();
+
+                getCandleData(url)
+                    .then(storeCandleData)
+                    .then(drawCandleGraph);
+
+                candleChart.hideLoading();
+
+                //ticker
+                tickerApiUrl = "https://api.upbit.com/v1/ticker?markets=" + market;
+                tradeApiUrl = "https://api.upbit.com/v1/trades/ticks?market=" + market + "&count=1";
+                requestTicker(tickerApiUrl, tickerUpdate);
+                requestTrade(tradeApiUrl, tradeUpdate);
+
+            })
+
+        //코인 리스트 출력
+        setTimeout(printCoinList, 300);
+        //미체결 주문 리스트 출력
+        printUnfilledOrderList();
+        //체결 주문 리스트 출력
+        printFilledOrderList();
+
+        //주문 가격 입력 폼 초기화
+        setTimeout(function(){
+            tradePriceOfSelectedCoin = Number(document.getElementById("tradePrice").innerText.slice(0, -4));
+            $("#bpbuyMoney").val(tradePriceOfSelectedCoin)
+            $("#bobuyWant").val(tradePriceOfSelectedCoin)
+            $("#bobuyMoney").val(tradePriceOfSelectedCoin)
+            $("#spsellMoney").val(tradePriceOfSelectedCoin)
+            $("#sosellWant").val(tradePriceOfSelectedCoin)
+            $("#sosellMoney").val(tradePriceOfSelectedCoin)
+        }, 300)
+    });
+</script>
+
+</html>
